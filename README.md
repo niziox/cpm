@@ -1,1 +1,1 @@
-# cpm
+# CPM algorithm
