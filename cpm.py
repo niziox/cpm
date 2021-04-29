@@ -127,7 +127,6 @@ def critical_path(matrix_graph, time_dict):
     return critical_path_list, f_float, s_float, n_float, timetable
 
 def cpm(matrix_graph):
-
     new_numeration = numeration(m)
 
     times = time_calculate(new_numeration[0])
@@ -135,6 +134,21 @@ def cpm(matrix_graph):
     critical_path_cpm, f_float, s_float, n_float, timetable = critical_path(new_numeration[0], times)
 
     return times, critical_path_cpm, f_float, s_float, n_float, timetable
+
+def grantt_chart(timetable):
+    # Harmonogram Gantt'a
+    df = []
+    for act in timetable.keys():
+        if timetable[act][4] == 0 and timetable[act][5] == 0 and timetable[act][5] == 0:
+            df.append((dict(Task=act, Start=f'2021-05-{int(timetable[act][0])}', Finish=f'2021-05-{int(timetable[act][3])}', Resource='Ścieżka krytyczna')))
+        else:
+            df.append((dict(Task=act, Start=f'2021-05-{int(timetable[act][0])}', Finish=f'2021-05-{int(timetable[act][1])}', Resource='Zakres trwania')))
+            df.append((dict(Task=act, Start=f'2021-05-{int(timetable[act][2])}', Finish=f'2021-05-{int(timetable[act][3])}', Resource='Zakres ukończenia')))
+
+    colors = {'Ścieżka krytyczna': 'rgb(220, 0, 0)', 'Zakres trwania': (1, 0.9, 0.16), 'Zakres ukończenia': 'rgb(0, 255, 100)'}
+
+    fig = ff.create_gantt(df, colors=colors, index_col='Resource', show_colorbar=True, group_tasks=True)
+    fig.show()
 
 
 if __name__ == '__main__':
@@ -173,16 +187,4 @@ if __name__ == '__main__':
         timetable[table] += [f_float[table], s_float[table], n_float[table]]
     print(timetable)
 
-    # Harmonogram Gantt'a
-    df = []
-    for act in timetable.keys():
-        if timetable[act][4] == 0 and timetable[act][5] == 0 and timetable[act][5] == 0:
-            df.append((dict(Task=act, Start=f'2021-05-{int(timetable[act][0])}', Finish=f'2021-05-{int(timetable[act][3])}', Resource='Ścieżka krytyczna')))
-        else:
-            df.append((dict(Task=act, Start=f'2021-05-{int(timetable[act][0])}', Finish=f'2021-05-{int(timetable[act][1])}', Resource='Zakres trwania')))
-            df.append((dict(Task=act, Start=f'2021-05-{int(timetable[act][2])}', Finish=f'2021-05-{int(timetable[act][3])}', Resource='Zakres ukończenia')))
-
-    colors = {'Ścieżka krytyczna': 'rgb(220, 0, 0)', 'Zakres trwania': (1, 0.9, 0.16), 'Zakres ukończenia': 'rgb(0, 255, 100)'}
-
-    fig = ff.create_gantt(df, colors=colors, index_col='Resource', show_colorbar=True, group_tasks=True)
-    fig.show()
+    grantt_chart(timetable)
