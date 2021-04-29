@@ -168,7 +168,7 @@ if __name__ == '__main__':
     print('\n\nCzynność : zapas niezależny')
     print(n_float)
 
-    print('Harmonogram realizacji przedsięwzięcia')
+    print('\n\nHarmonogram realizacji przedsięwzięcia')
     for table in timetable.keys():
         timetable[table] += [f_float[table], s_float[table], n_float[table]]
     print(timetable)
